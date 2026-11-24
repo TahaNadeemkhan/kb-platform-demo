@@ -9,3 +9,4 @@
 | `cases` | `status` | `open`, `processing` or `closed` |
 | `cases` | `updated_at` | Last activity on the case |
 | `removal_jobs` | `case_id`, `mailbox`, `state` | One job per mailbox: `queued`, `done` or `failed` |
+| `quarantine_items` | `report_id`, `held_until`, `released_by` | A reported message held back until `held_until`; `released_by` is set when an admin lets it through early |

@@ -11,7 +11,7 @@ request.
 
 ## Data model
 
-See `docs/data-model.md`. Tables: `reports`, `cases`, `removal_jobs`.
+See `docs/data-model.md`. Tables: `reports`, `cases`, `removal_jobs`, `quarantine_items`.
 
 ## Business rules
 
