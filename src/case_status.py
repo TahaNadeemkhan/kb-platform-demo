@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 
-STUCK_AFTER = timedelta(hours=2)
+STUCK_AFTER = timedelta(hours=1)
 AUTO_CLOSE_AFTER = timedelta(days=30)
 
 

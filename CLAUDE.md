@@ -16,5 +16,5 @@ See `docs/data-model.md`. Tables: `reports`, `cases`, `removal_jobs`, `quarantin
 ## Business rules
 
 - Report bodies are deleted 14 days after the report (`docs/retention.md`).
-- A case is stuck when it has been `processing` for more than 2 hours.
+- A case is stuck when it has been `processing` for more than 1 hour.
 - A case closes on its own after 30 days with no activity.
