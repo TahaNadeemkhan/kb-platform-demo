@@ -1,0 +1,33 @@
+name: Notify Inspector
+
+# Rings the doorbell: tells kb-inspector-demo which commit changed, so its agent can update itself.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send repository_dispatch to kb-inspector-demo
+        env:
+          TOKEN: ${{ secrets.INSPECTOR_DISPATCH_TOKEN }}
+          MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          kind=merge
+          case "$MESSAGE" in hotfix*) kind=hotfix ;; esac
+          sent_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          body=$(jq -n --arg repo "$GITHUB_REPOSITORY" --arg sha "$GITHUB_SHA" --arg kind "$kind" --arg sent "$sent_at" \
+            '{event_type: "platform-changed", client_payload: {repo: $repo, sha: $sha, kind: $kind, sent_at: $sent}}')
+          echo "$body"
+          code=$(curl -sS -o response.txt -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY_OWNER}/kb-inspector-demo/dispatches" \
+            -d "$body")
+          echo "dispatch HTTP $code"
+          if [ "$code" != "204" ]; then cat response.txt; exit 1; fi
